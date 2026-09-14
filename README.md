@@ -13,7 +13,7 @@ GitHub repository -> Argo CD Application -> atp-tcms namespace
                                       |- uploads PVC + database PVC
 ```
 
-The public Community Edition image is a rolling release. It is therefore kept in `kustomization.yaml` as an explicit operational choice. For a production change-control process, mirror and scan the image into an internal registry, then replace the image name with an immutable digest.
+The public Community Edition image is a rolling release and its current CentOS Stream 10 base requires x86-64-v3. This cluster lacks that CPU baseline, so `deploy/images/kiwi-compat.Dockerfile` builds a generic Ubuntu 24.04-compatible image and publishes it to the internal registry. For a production change-control process, scan that image and replace its tag with an immutable digest.
 
 ## Bootstrap
 
@@ -31,4 +31,3 @@ The Service is a `LoadBalancer` to match the cluster convention used by the exis
 - Back up both PVCs before database or image upgrades.
 - Do not delete the `atp-tcms` namespace while preserving test history matters.
 - Review the upstream Kiwi TCMS release notes before updating the image. Community Edition does not publish versioned public images; use a scanned internal mirror for reproducible releases.
-

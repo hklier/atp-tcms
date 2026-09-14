@@ -20,8 +20,8 @@ spec:
       restartPolicy: OnFailure
       containers:
         - name: bootstrap
-          image: pub.kiwitcms.eu/kiwitcms/kiwi:latest
-          imagePullPolicy: Always
+          image: 192.168.2.240:5000/atp-tcms/kiwi:ubuntu24-compat
+          imagePullPolicy: IfNotPresent
           command: ["/bin/sh", "-ec"]
           args:
             - |
