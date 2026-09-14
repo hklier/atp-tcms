@@ -39,6 +39,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 WORKDIR /Kiwi
 COPY --from=build /venv/ /venv/
+COPY --from=build /Kiwi/tcms/ /Kiwi/tcms/
+COPY --from=build /Kiwi/tcms_settings_dir/ /Kiwi/tcms_settings_dir/
 COPY manage.py httpd-foreground /Kiwi/
 COPY etc/ /Kiwi/etc/
 RUN mkdir -p /Kiwi/ssl /Kiwi/static /Kiwi/uploads /var/lib/nginx /var/log/nginx && \
