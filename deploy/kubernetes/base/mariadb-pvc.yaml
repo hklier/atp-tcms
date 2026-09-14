@@ -6,9 +6,9 @@ metadata:
   labels:
     app.kubernetes.io/part-of: atp-tcms
 spec:
+  storageClassName: nfs-client
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
       storage: 20Gi
-
