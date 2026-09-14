@@ -52,7 +52,7 @@ RUN mkdir -p /Kiwi/ssl /Kiwi/static /Kiwi/uploads /var/lib/nginx /var/log/nginx 
     ln -s /Kiwi/ssl/localhost.key /etc/ssl/private/localhost.key && \
     /Kiwi/manage.py collectstatic --noinput --link && \
     chmod +x /Kiwi/httpd-foreground && \
-    chown -R 1001:1001 /Kiwi /venv /var/lib/nginx /var/log/nginx
+    chown -R 1001:1001 /Kiwi/ssl /Kiwi/uploads /var/lib/nginx /var/log/nginx
 
 EXPOSE 8080 8443
 USER 1001
