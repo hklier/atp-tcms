@@ -1,0 +1,65 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: kiwi-bootstrap
+  namespace: atp-tcms
+  annotations:
+    argocd.argoproj.io/hook: Sync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+    argocd.argoproj.io/sync-wave: "1"
+  labels:
+    app.kubernetes.io/name: kiwi-tcms
+    app.kubernetes.io/part-of: atp-tcms
+spec:
+  backoffLimit: 3
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: kiwi-bootstrap
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: bootstrap
+          image: pub.kiwitcms.eu/kiwitcms/kiwi:latest
+          imagePullPolicy: Always
+          command: ["/bin/sh", "-ec"]
+          args:
+            - |
+              /Kiwi/manage.py migrate --noinput
+              /Kiwi/manage.py createsuperuser --noinput || true
+              /Kiwi/manage.py set_domain "${KIWI_DOMAIN}"
+              /Kiwi/manage.py refresh_permissions
+          env:
+            - name: KIWI_DB_HOST
+              value: kiwi-mariadb
+            - name: KIWI_DB_PORT
+              value: "3306"
+            - name: KIWI_DB_NAME
+              value: kiwi
+            - name: KIWI_DB_USER
+              value: kiwi
+            - name: KIWI_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: kiwi-credentials
+                  key: mariadb-password
+            - name: DJANGO_SUPERUSER_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: kiwi-credentials
+                  key: django-superuser-username
+            - name: DJANGO_SUPERUSER_EMAIL
+              valueFrom:
+                secretKeyRef:
+                  name: kiwi-credentials
+                  key: django-superuser-email
+            - name: DJANGO_SUPERUSER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: kiwi-credentials
+                  key: django-superuser-password
+            - name: KIWI_DOMAIN
+              valueFrom:
+                secretKeyRef:
+                  name: kiwi-credentials
+                  key: kiwi-domain

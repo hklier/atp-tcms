@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: atp-tcms
+  labels:
+    app.kubernetes.io/part-of: atp-tcms
+

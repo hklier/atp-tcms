@@ -1,0 +1,15 @@
+# Needed only if the GitHub repository is private. Apply manually; never commit the real file.
+apiVersion: v1
+kind: Secret
+metadata:
+  name: atp-tcms-github
+  namespace: argocd
+  labels:
+    argocd.argoproj.io/secret-type: repository
+type: Opaque
+stringData:
+  type: git
+  url: https://github.com/hklier/atp-tcms.git
+  username: REPLACE_WITH_GITHUB_USERNAME
+  password: REPLACE_WITH_GITHUB_FINE_GRAINED_PAT
+

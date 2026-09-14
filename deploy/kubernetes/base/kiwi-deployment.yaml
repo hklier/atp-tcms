@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kiwi-tcms
+  namespace: atp-tcms
+  labels:
+    app.kubernetes.io/name: kiwi-tcms
+    app.kubernetes.io/part-of: atp-tcms
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: kiwi-tcms
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: kiwi-tcms
+        app.kubernetes.io/part-of: atp-tcms
+    spec:
+      securityContext:
+        fsGroup: 1000
+      containers:
+        - name: kiwi-tcms
+          image: pub.kiwitcms.eu/kiwitcms/kiwi:latest
+          imagePullPolicy: Always
+          ports:
+            - name: https
+              containerPort: 8443
+          env:
+            - name: KIWI_DB_HOST
+              value: kiwi-mariadb
+            - name: KIWI_DB_PORT
+              value: "3306"
+            - name: KIWI_DB_NAME
+              value: kiwi
+            - name: KIWI_DB_USER
+              value: kiwi
+            - name: KIWI_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: kiwi-credentials
+                  key: mariadb-password
+          readinessProbe:
+            tcpSocket:
+              port: https
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: https
+            initialDelaySeconds: 90
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+            limits:
+              cpu: "1"
+              memory: 1Gi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+            readOnlyRootFilesystem: false
+          volumeMounts:
+            - name: uploads
+              mountPath: /Kiwi/uploads
+      volumes:
+        - name: uploads
+          persistentVolumeClaim:
+            claimName: kiwi-uploads

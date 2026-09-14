@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kiwi-mariadb
+  namespace: atp-tcms
+  labels:
+    app.kubernetes.io/name: mariadb
+    app.kubernetes.io/part-of: atp-tcms
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: mariadb
+  ports:
+    - name: mysql
+      port: 3306
+      targetPort: mysql
+

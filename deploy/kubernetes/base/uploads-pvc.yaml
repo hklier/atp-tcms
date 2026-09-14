@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: kiwi-uploads
+  namespace: atp-tcms
+  labels:
+    app.kubernetes.io/part-of: atp-tcms
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
+

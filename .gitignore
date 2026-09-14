@@ -1,0 +1,4 @@
+# Never commit runtime credentials or generated Kubernetes secrets.
+deploy/bootstrap/kiwi-credentials.yaml
+deploy/bootstrap/argocd-repository.yaml
+
