@@ -34,7 +34,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     LANGUAGE=en_US.UTF-8
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    ca-certificates curl libjpeg-turbo8 libmariadb3 libpq5 nginx python3.12 sscg && \
+    ca-certificates curl libjpeg-turbo8 libmariadb3 libpq5 libpython3.12 nginx python3.12 sscg && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /Kiwi
