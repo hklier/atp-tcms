@@ -41,7 +41,8 @@ WORKDIR /Kiwi
 COPY --from=build /venv/ /venv/
 COPY --from=build /Kiwi/tcms/ /Kiwi/tcms/
 COPY --from=build /Kiwi/tcms_settings_dir/ /Kiwi/tcms_settings_dir/
-COPY manage.py httpd-foreground /Kiwi/
+COPY --from=build /Kiwi/manage.py /Kiwi/manage.py
+COPY httpd-foreground /Kiwi/httpd-foreground
 COPY etc/ /Kiwi/etc/
 RUN mkdir -p /Kiwi/ssl /Kiwi/static /Kiwi/uploads /var/lib/nginx /var/log/nginx && \
     /usr/bin/sscg -v -f \
