@@ -26,7 +26,10 @@ spec:
       containers:
         - name: kiwi-tcms
           image: 192.168.2.240:5000/atp-tcms/kiwi:ubuntu24-compat
-          imagePullPolicy: IfNotPresent
+          # The compatibility image tag is rebuilt in the internal registry.
+          # Always pull it when the Deployment rolls out so nodes cannot retain
+          # a stale cached build.
+          imagePullPolicy: Always
           ports:
             - name: https
               containerPort: 8443
