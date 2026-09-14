@@ -8,7 +8,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential ca-certificates curl gettext libffi-dev libjpeg-dev \
-    libmariadb-dev libpq-dev python3.12 python3.12-dev python3.12-venv \
+    libmariadb-dev libpq-dev pkg-config python3.12 python3.12-dev python3.12-venv \
     rustc cargo tar xz-utils && \
     rm -rf /var/lib/apt/lists/*
 
